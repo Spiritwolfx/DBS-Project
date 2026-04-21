@@ -1,3 +1,5 @@
+drop database Project;
+
 create database Project;
 use Project;
 
@@ -26,14 +28,13 @@ CREATE TABLE Subject ( -- a subject belongs to a board AND a level
  
     CONSTRAINT pk_subject          PRIMARY KEY (subject_id),
     CONSTRAINT fk_subject_board    FOREIGN KEY (board_id)  REFERENCES ExamBoard(board_id),
-    CONSTRAINT fk_subject_level    FOREIGN KEY (level_id)  REFERENCES Level(level_id),
-    CONSTRAINT check_subject_id    CHECK (subject_id >= 1000 AND subject_id <= 9999)
+    CONSTRAINT fk_subject_level    FOREIGN KEY (level_id)  REFERENCES Level(level_id)
 );
 
 CREATE TABLE Components ( -- a subject can have multiple components, currently only for o level physics
     comp_id   INT  NOT NULL AUTO_INCREMENT,
     subj_id   INT  NOT NULL,                        -- which subject this component belongs to
-    component ENUM('P1','P2','P4') NOT NULL,
+    component ENUM('P1','P2','P4','P6') NOT NULL,
     type      ENUM('MCQ','Structured','ATP') NOT NULL,
  
     CONSTRAINT pk_components        PRIMARY KEY (comp_id),
@@ -51,7 +52,7 @@ CREATE TABLE Series ( -- papers reference a series so year+session are in one pl
 
 CREATE TABLE Paper ( -- stores paths to the question paper and mark scheme files
     paper_id  INT  NOT NULL AUTO_INCREMENT,
-    comp_id   INT  NOT NULL,   -- which component (P1/P2/P4) this paper is for
+    comp_id   INT  NOT NULL,   -- which component (P1/P2/P4/P6) this paper is for
     series_id INT  NOT NULL,   -- which sitting (year + session)
     variant   INT  NOT NULL,   -- 1, 2, or 3
     qp_path   TEXT,            -- file path to the question paper PDF
